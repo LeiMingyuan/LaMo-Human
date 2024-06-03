@@ -2,14 +2,14 @@ export TRANSFORMERS_OFFLINE=0
 export TOKENIZERS_PARALLELISM=0
 
 model_type=dt
-lr=1e-4
-lmlr=1e-5
+lr=1e-3
+lmlr=1e-4
 weight_decay=1e-5
 dropout=0.1
 warmup_steps=2500
 num_steps_per_iter=2500
-max_iters=40
-num_eval_episodes=20
+max_iters=100
+num_eval_episodes=10
 
 env=${1}
 if [ "$env" == "reacher2d" ]; then
@@ -43,7 +43,10 @@ CUDA_VISIBLE_DEVICES=${gpu} python experiment.py --env ${env} \
         --adapt_mode \
         --adapt_embed \
         --lora \
+        --visualize \
         --mlp_embedding \
         --outdir ${outdir} \
         --dropout ${dropout} \
-        --description ${description}
+        --description ${description}\
+        --data_suffix ${7}\
+        -w

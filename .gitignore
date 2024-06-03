@@ -9,3 +9,9 @@ experiment-d4rl/data
 experiemnt-d4rl/wandb
 experiment-d4rl/checkpoints
 experiment-atari/runs
+*.wandb
+*.yaml
+O2M-main/
+**/wandb/
+*.sh
+MUJOCO_LOG.TXT

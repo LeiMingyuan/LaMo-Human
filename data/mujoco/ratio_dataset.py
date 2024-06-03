@@ -5,13 +5,13 @@ import pickle
 
 import random
 
-env_names = ["hopper", "walker2d", "halfcheetah"]
+env_names = ["hopper","RRIS"]
 dataset_types = ["medium"]
-suffix = "yoursuffix"
+suffix = "test2"
 
 for env_name in env_names:
     for dataset_type in dataset_types:
-        ratios = [0.1, 0.01, 0.005]
+        ratios = [1]
         for ratio in ratios:
             path = env_name+"-"+dataset_type+"-v2.pkl"
             with open(path, "rb") as fo:

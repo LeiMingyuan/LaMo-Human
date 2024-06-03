@@ -154,8 +154,8 @@ def evaluate_episode_rtg(
         
         if record_video and t % 2 == 0:
             curr_frame = env.render(mode='rgb_array')
-            print(curr_frame.shape)
-            frame_resized = cv2.resize(curr_frame, (84, 84)) 
+            # print(curr_frame.shape)
+            frame_resized = cv2.resize(curr_frame, (600, 600)) 
             frames.append(frame_resized)
 
         if done:
@@ -164,7 +164,7 @@ def evaluate_episode_rtg(
     model.past_key_values = None
 
     if record_video:
-        clip = ImageSequenceClip(frames, fps=30)
+        clip = ImageSequenceClip(frames, fps=100)
         clip.write_videofile(video_path, logger=None)
 
     return episode_return, episode_length

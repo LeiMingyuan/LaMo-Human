@@ -7,7 +7,7 @@ import random
 
 env_names = ["kitchen"]
 dataset_types = ["partial", "complete"]
-suffix = "yoursuffix"
+suffix = "test1"
 
 for env_name in env_names:
     for dataset_type in dataset_types:

@@ -77,6 +77,12 @@ def experiment(
         max_ep_len = 1000
         env_targets = [5, 4, 3, 2, 1]
         scale = 1.0
+    elif env_name == 'RRIS':
+        from decision_transformer.envs.RRIS_motion import RRISEnv
+        env = RRISEnv()
+        max_ep_len = 5000
+        env_targets = [2000, 3000]
+        scale = 1000.
     else:
         raise NotImplementedError
 
@@ -95,6 +101,8 @@ def experiment(
         dataset_path = f"../data/mujoco/{env_name}-{dataset}{ratio_str}-v2.pkl"
     elif env_name == "kitchen":
         dataset_path = f"../data/kitchen/{env_name}-{dataset}{ratio_str}-v0.pkl"
+    elif env_name == "RRIS":
+        dataset_path = f"../data/mujoco/{env_name}-{dataset}{ratio_str}-v2.pkl"
     else: 
         raise NotImplementedError
     with open(dataset_path, "rb") as f:
@@ -111,6 +119,7 @@ def experiment(
         traj_lens.append(len(path["observations"]))
         returns.append(-path["rewards"].sum())
     traj_lens, returns = np.array(traj_lens), np.array(returns)
+    # traj_lens, returns = np.array(traj_lens), np.ones_like(returns)
 
     # used for input normalization
     states = np.concatenate(states, axis=0)
@@ -161,7 +170,9 @@ def experiment(
 
             # get sequences from dataset
             s.append(traj["observations"][si : si + max_len].reshape(1, -1, state_dim))
-            a.append(traj["actions"][si : si + max_len].reshape(1, -1, act_dim))
+            #!Change actions to next_observations
+            # a.append(traj["actions"][si : si + max_len].reshape(1, -1, act_dim))
+            a.append(traj["next_observations"][si : si + max_len,:27].reshape(1, -1, act_dim))
             r.append(traj["rewards"][si : si + max_len].reshape(1, -1, 1))
             if "terminals" in traj:
                 d.append(traj["terminals"][si : si + max_len].reshape(1, -1))
@@ -432,8 +443,8 @@ def experiment(
             name=exp_prefix,
             group=group_name,
             # NOTE: fill in the name of your own wandb project
-            entity="your-entity",
-            project="your-project",
+            entity="leimingyuan166",
+            project="LaMo_Human_rris_gtposaction",
             config=variant,
         )
         # wandb.watch(model)  # wandb has some bug
